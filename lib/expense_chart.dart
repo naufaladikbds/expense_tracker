@@ -5,13 +5,12 @@ class ExpenseChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      margin: EdgeInsets.only(bottom: 40),
+      height: 110,
       width: double.infinity,
-      color: Color.fromARGB(255, 179, 179, 179),
+      color: Color.fromARGB(255, 214, 214, 214),
       child: Container(
         margin: EdgeInsets.all(10),
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.only(top: 8, bottom: 12, left: 10, right: 10),
         color: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

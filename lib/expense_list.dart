@@ -6,9 +6,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 
 class ExpenseList extends StatelessWidget {
-  List<Expense> expenseHistory;
+  List<Expense> expenseList;
 
-  ExpenseList(this.expenseHistory);
+  ExpenseList(this.expenseList);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ExpenseList extends StatelessWidget {
         padding: EdgeInsets.all(10),
         color: Color.fromARGB(255, 214, 214, 214),
         child: ListView.builder(
-          itemCount: expenseHistory.length,
+          itemCount: expenseList.length,
           itemBuilder: (ctx, i) => Card(
             child: Padding(
               padding: const EdgeInsets.only(
@@ -35,7 +35,7 @@ class ExpenseList extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      "\$${expenseHistory[i].amount.toInt().toString()}",
+                      "\$${expenseList[i].amount.toInt().toString()}",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -45,14 +45,14 @@ class ExpenseList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        expenseHistory[i].title.toString(),
+                        expenseList[i].title.toString(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
                         ),
                       ),
                       Text(
-                        DateFormat.yMMMd().format(expenseHistory[i].date),
+                        DateFormat.yMMMd().format(expenseList[i].date),
                         style: TextStyle(
                           color: Color.fromARGB(255, 165, 165, 165),
                         ),

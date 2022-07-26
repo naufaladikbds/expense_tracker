@@ -5,42 +5,48 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class ExpenseInput extends StatelessWidget {
-  void Function(Expense) addNewExpense;
+  final void Function(Expense) addNewExpense;
+
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
 
   ExpenseInput(this.addNewExpense);
 
-  String titleInput = '';
-  String amountInput = '';
+  // String titleInput = '';
+  // String amountInput = '';
 
-  void setTitle(input) {
-    titleInput = input;
-  }
-
-  void setAmount(input) {
-    amountInput = input;
-  }
+  // void setTitle(input) {
+  //   titleInput = input;
+  // }
+  // void setAmount(input) {
+  //   amountInput = input;
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
-      color: Colors.white70,
+      padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+      color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          renderTextField("Title", setTitle),
+          renderTextField("Title", titleController),
           SizedBox(height: 10),
-          renderTextField("Amount", setAmount),
+          renderTextField("Amount", amountController),
           SizedBox(height: 10),
           TextButton(
               onPressed: () {
-                print('title is: $titleInput, amount is $amountInput');
-                addNewExpense(Expense(
-                  id: '23',
-                  title: titleInput,
-                  amount: double.parse(amountInput),
-                  date: DateTime.now(),
-                ));
+                print(
+                  'title is: $titleController, amount is $amountController',
+                );
+                addNewExpense(
+                  Expense(
+                    id: DateTime.now().toString(),
+                    title: titleController.value.text,
+                    amount: double.parse(amountController.value.text),
+                    date: DateTime.now(),
+                  ),
+                );
               },
               child: Text("Add Transaction"))
         ],
@@ -49,11 +55,11 @@ class ExpenseInput extends StatelessWidget {
   }
 
   TextField renderTextField(
-      String labelText, void Function(dynamic) onChanged) {
+    String labelText,
+    TextEditingController controller,
+  ) {
     return TextField(
-      onChanged: (input) {
-        onChanged(input);
-      },
+      controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
         border: OutlineInputBorder(
