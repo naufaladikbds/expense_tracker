@@ -5,31 +5,48 @@ class ExpenseChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 90,
+      height: 100,
+      margin: EdgeInsets.only(bottom: 40),
       width: double.infinity,
-      color: Colors.yellow,
+      color: Color.fromARGB(255, 179, 179, 179),
       child: Container(
         margin: EdgeInsets.all(10),
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(8),
         color: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Container(
-              color: Colors.blue,
-              width: 10,
-            ),
-            Container(
-              color: Colors.blue,
-              width: 10,
-            ),
-            Container(
-              color: Colors.blue,
-              width: 10,
-            ),
+            CandleChart(),
+            CandleChart(),
+            CandleChart(),
+            CandleChart(),
+            CandleChart(),
+            CandleChart(),
+            CandleChart(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class CandleChart extends StatelessWidget {
+  const CandleChart({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text("\$"),
+        Expanded(
+          child: Container(
+            color: Colors.blue,
+            width: 10,
+          ),
+        ),
+      ],
     );
   }
 }

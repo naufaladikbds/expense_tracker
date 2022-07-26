@@ -32,7 +32,7 @@ class MainScreenState extends State {
     ),
     Expense(
       id: "02",
-      title: "'Jajan'",
+      title: "New car",
       amount: 500000,
       description: 'hehe',
       date: DateTime.now(),
@@ -48,11 +48,10 @@ class MainScreenState extends State {
         ),
       ),
       body: Container(
-        color: Colors.grey,
+        color: Color.fromARGB(255, 179, 179, 179),
         child: Column(
           children: [
             ExpenseChart(),
-            SizedBox(height: 30),
             ExpenseList(expenseHistory),
           ],
         ),
