@@ -52,7 +52,7 @@ class ExpenseList extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        DateFormat('yyyy/MM/dd').format(expenseHistory[i].date),
+                        DateFormat.yMMMd().format(expenseHistory[i].date),
                         style: TextStyle(
                           color: Color.fromARGB(255, 165, 165, 165),
                         ),

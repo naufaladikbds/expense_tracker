@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:expense_tracker/expense.dart';
 import 'package:expense_tracker/expense_chart.dart';
+import 'package:expense_tracker/expense_input.dart';
 import 'package:expense_tracker/expense_list.dart';
 import "package:flutter/material.dart";
 
@@ -16,28 +19,31 @@ class MyApp extends StatelessWidget {
 
 class MainScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return MainScreenState();
-  }
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class MainScreenState extends State {
+class _MainScreenState extends State<MainScreen> {
   final List<Expense> expenseHistory = [
     Expense(
       id: "01",
       title: "Jajan",
       amount: 10000,
-      description: 'oops',
       date: DateTime.now(),
     ),
     Expense(
       id: "02",
       title: "New car",
       amount: 500000,
-      description: 'hehe',
       date: DateTime.now(),
     ),
   ];
+
+  void addNewExpense(Expense expense) {
+    setState(() {
+      expenseHistory.add(expense);
+      print(expenseHistory.length);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +58,7 @@ class MainScreenState extends State {
         child: Column(
           children: [
             ExpenseChart(),
+            ExpenseInput(addNewExpense),
             ExpenseList(expenseHistory),
           ],
         ),
