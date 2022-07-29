@@ -15,12 +15,16 @@ class ExpenseList extends StatelessWidget {
     return Expanded(
       flex: 1,
       child: Container(
-        padding: EdgeInsets.all(10),
         color: Color.fromARGB(255, 214, 214, 214),
         child: ListView.builder(
           itemCount: expenseList.length,
           itemBuilder: (ctx, i) => Card(
-            child: Padding(
+            margin: EdgeInsets.only(
+              top: 10,
+              right: 10,
+              left: 10,
+            ),
+            child: Container(
               padding: const EdgeInsets.only(
                   top: 10, bottom: 10, left: 15, right: 30),
               child: Row(
@@ -35,7 +39,7 @@ class ExpenseList extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      "\$${expenseList[i].amount.toInt().toString()}",
+                      "\$${expenseList[i].amount.toStringAsFixed(2)}",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),

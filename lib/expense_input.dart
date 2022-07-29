@@ -4,24 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class ExpenseInput extends StatelessWidget {
+class ExpenseInput extends StatefulWidget {
   final void Function(Expense) addNewExpense;
-
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
 
   ExpenseInput(this.addNewExpense);
 
+  @override
+  State<ExpenseInput> createState() => _ExpenseInputState();
+}
+
+class _ExpenseInputState extends State<ExpenseInput> {
+  final titleController = TextEditingController();
+
+  final amountController = TextEditingController();
+
   // String titleInput = '';
-  // String amountInput = '';
-
-  // void setTitle(input) {
-  //   titleInput = input;
-  // }
-  // void setAmount(input) {
-  //   amountInput = input;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,11 +32,10 @@ class ExpenseInput extends StatelessWidget {
           renderTextField("Amount", amountController),
           SizedBox(height: 10),
           TextButton(
-              onPressed: () {
-                print(
-                  'title is: $titleController, amount is $amountController',
-                );
-                addNewExpense(
+            onPressed: () {
+              if (titleController.value.text.isNotEmpty ||
+                  double.parse(amountController.value.text) <= 0) {
+                widget.addNewExpense(
                   Expense(
                     id: DateTime.now().toString(),
                     title: titleController.value.text,
@@ -47,8 +43,11 @@ class ExpenseInput extends StatelessWidget {
                     date: DateTime.now(),
                   ),
                 );
-              },
-              child: Text("Add Transaction"))
+                Navigator.pop(context);
+              }
+            },
+            child: Text("Add Transaction"),
+          ),
         ],
       ),
     );
@@ -60,6 +59,7 @@ class ExpenseInput extends StatelessWidget {
   ) {
     return TextField(
       controller: controller,
+      keyboardType: labelText == 'Amount' ? TextInputType.number : null,
       decoration: InputDecoration(
         labelText: labelText,
         border: OutlineInputBorder(
