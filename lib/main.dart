@@ -14,6 +14,26 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Expense Tracker",
+      theme: ThemeData(
+        textTheme: TextTheme(
+          bodyText1: TextStyle(
+            fontSize: 16,
+            fontFamily: 'OpenSans',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        primarySwatch: Colors.green,
+        accentColor: Colors.amber,
+        fontFamily: 'OpenSans',
+        appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontFamily: 'OpenSans',
+            fontWeight: FontWeight.w600,
+            fontSize: 17,
+            color: Colors.white,
+          ),
+        ),
+      ),
       home: MainScreen(),
     );
   }
@@ -26,18 +46,18 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   final List<Expense> expenseList = [
-    Expense(
-      id: "01",
-      title: "Bruh",
-      amount: 10500,
-      date: DateTime.now(),
-    ),
-    Expense(
-      id: "02",
-      title: "New car",
-      amount: 500000,
-      date: DateTime.now(),
-    ),
+    // Expense(
+    //   id: "01",
+    //   title: "Bruh",
+    //   amount: 10500,
+    //   date: DateTime.now(),
+    // ),
+    // Expense(
+    //   id: "02",
+    //   title: "New car",
+    //   amount: 500000,
+    //   date: DateTime.now(),
+    // ),
   ];
 
   void addNewExpense(Expense expense) {
@@ -74,6 +94,7 @@ class _MainScreenState extends State<MainScreen> {
         ],
         title: Text(
           "Expense Tracker",
+          style: TextStyle(),
         ),
       ),
       body: Container(
