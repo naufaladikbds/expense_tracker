@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/intl.dart';
 
 class ExpenseInput extends StatefulWidget {
   final void Function(Expense) addNewExpense;
@@ -18,6 +19,12 @@ class _ExpenseInputState extends State<ExpenseInput> {
 
   final amountController = TextEditingController();
 
+  var transDate = DateTime.now();
+
+  setTransDate(val) {
+    transDate = val;
+  }
+
   // String titleInput = '';
   @override
   Widget build(BuildContext context) {
@@ -31,6 +38,10 @@ class _ExpenseInputState extends State<ExpenseInput> {
           SizedBox(height: 10),
           renderTextField("Amount", amountController),
           SizedBox(height: 10),
+          CustomDatePicker(
+            transDate,
+            setTransDate,
+          ),
           TextButton(
             onPressed: () {
               if (titleController.value.text.isNotEmpty ||
@@ -40,7 +51,7 @@ class _ExpenseInputState extends State<ExpenseInput> {
                     id: DateTime.now().toString(),
                     title: titleController.value.text,
                     amount: double.parse(amountController.value.text),
-                    date: DateTime.now(),
+                    date: transDate,
                   ),
                 );
                 Navigator.pop(context);
@@ -67,6 +78,43 @@ class _ExpenseInputState extends State<ExpenseInput> {
             color: Colors.black,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class CustomDatePicker extends StatefulWidget {
+  DateTime transDate;
+  void Function(DateTime) setTransDate;
+
+  CustomDatePicker(this.transDate, this.setTransDate);
+
+  @override
+  State<CustomDatePicker> createState() {
+    return CustomDatePickerState();
+  }
+}
+
+class CustomDatePickerState extends State<CustomDatePicker> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: OutlinedButton(
+        onPressed: () async {
+          await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(1999),
+            lastDate: DateTime(2200),
+          ).then((value) {
+            setState(() {
+              widget.transDate = value!;
+              widget.setTransDate(value);
+            });
+          });
+        },
+        child: Text(DateFormat.yMMMEd().format(widget.transDate)),
       ),
     );
   }
