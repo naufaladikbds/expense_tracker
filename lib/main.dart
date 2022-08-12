@@ -60,6 +60,13 @@ class _MainScreenState extends State<MainScreen> {
     // ),
   ];
 
+  List<Expense> get lastSevenDaysExpenses {
+    return expenseList
+        .where((element) =>
+            element.date.isAfter(DateTime.now().subtract(Duration(days: 8))))
+        .toList();
+  }
+
   void addNewExpense(Expense expense) {
     setState(() {
       expenseList.add(expense);
@@ -101,7 +108,9 @@ class _MainScreenState extends State<MainScreen> {
         color: Color.fromARGB(255, 179, 179, 179),
         child: Column(
           children: [
-            ExpenseChart(),
+            ExpenseChart(
+              recentExpenses: lastSevenDaysExpenses,
+            ),
             ExpenseList(expenseList),
           ],
         ),
