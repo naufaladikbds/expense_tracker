@@ -86,6 +86,11 @@ class _MainScreenState extends State<MainScreen> {
         });
   }
 
+  void deleteExpense(String id) {
+    expenseList.removeWhere((element) => element.id == id);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     print("MAIN IS CALLED AGAIN");
@@ -111,7 +116,7 @@ class _MainScreenState extends State<MainScreen> {
             ExpenseChart(
               recentExpenses: lastSevenDaysExpenses,
             ),
-            ExpenseList(expenseList),
+            ExpenseList(expenseList, deleteExpense),
           ],
         ),
       ),
