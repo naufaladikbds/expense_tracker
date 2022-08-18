@@ -101,8 +101,8 @@ class CustomDatePickerState extends State<CustomDatePicker> {
     return Container(
       width: double.infinity,
       child: OutlinedButton(
-        onPressed: () async {
-          await showDatePicker(
+        onPressed: () {
+          showDatePicker(
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime(1999),
