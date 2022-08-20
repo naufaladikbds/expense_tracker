@@ -45,11 +45,13 @@ class ExpenseChart extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: groupedTransactionValues
-              .map((e) => CandleChart(
-                    day: e['day'] as String,
-                    amountSpent: e['amount'] as double,
-                    weeklySpending: weeklySpending,
-                  ))
+              .map(
+                (e) => CandleChart(
+                  day: e['day'] as String,
+                  amountSpent: e['amount'] as double,
+                  weeklySpending: weeklySpending,
+                ),
+              )
               .toList(),
         ),
       ),
@@ -72,31 +74,42 @@ class CandleChart extends StatelessWidget {
     double percentAmountSpent = amountSpent / weeklySpending;
     print(percentAmountSpent);
 
-    return Column(
-      children: [
-        Text("\$"),
-        Container(
-          color: Colors.grey,
-          width: 10,
-          height: 50,
-          alignment: Alignment.bottomCenter,
-          child: FractionallySizedBox(
-            widthFactor: 1,
-            heightFactor: amountSpent == 0 ? 0 : percentAmountSpent,
-            child: Container(
-              height: double.infinity,
-              width: double.infinity,
-              color: Colors.blue,
-            ),
+    return LayoutBuilder(builder: (ctx, constraint) {
+      return Column(
+        children: [
+          Container(
+            height: constraint.maxHeight * 0.18,
+            child: Text("\$"),
           ),
-          // child: Container(
-          //   color: Colors.blue,
-          //   width: 10,
-          //   height: amountSpent == 0 ? 0 : percentAmountSpent * 100 / 2,
-          // ),
-        ),
-        Text(day),
-      ],
-    );
+          Container(
+            color: Colors.grey,
+            width: 10,
+            height: constraint.maxHeight * 0.6,
+            alignment: Alignment.bottomCenter,
+            child: FractionallySizedBox(
+              widthFactor: 1,
+              heightFactor: amountSpent == 0 ? 0 : percentAmountSpent,
+              child: Container(
+                height: double.infinity,
+                width: double.infinity,
+                color: Colors.blue,
+              ),
+            ),
+            // child: Container(
+            //   color: Colors.blue,
+            //   width: 10,
+            //   height: amountSpent == 0 ? 0 : percentAmountSpent * 100 / 2,
+            // ),
+          ),
+          SizedBox(
+            height: constraint.maxHeight * 0.04,
+          ),
+          Container(
+            height: constraint.maxHeight * 0.18,
+            child: Text(day),
+          ),
+        ],
+      );
+    });
   }
 }

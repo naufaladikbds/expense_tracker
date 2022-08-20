@@ -28,38 +28,45 @@ class _ExpenseInputState extends State<ExpenseInput> {
   // String titleInput = '';
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
-      color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          renderTextField("Title", titleController),
-          SizedBox(height: 10),
-          renderTextField("Amount", amountController),
-          SizedBox(height: 10),
-          CustomDatePicker(
-            transDate,
-            setTransDate,
-          ),
-          TextButton(
-            onPressed: () {
-              if (titleController.value.text.isNotEmpty ||
-                  double.parse(amountController.value.text) <= 0) {
-                widget.addNewExpense(
-                  Expense(
-                    id: DateTime.now().toString(),
-                    title: titleController.value.text,
-                    amount: double.parse(amountController.value.text),
-                    date: transDate,
-                  ),
-                );
-                Navigator.pop(context);
-              }
-            },
-            child: Text("Add Transaction"),
-          ),
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 20,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            renderTextField("Title", titleController),
+            SizedBox(height: 10),
+            renderTextField("Amount", amountController),
+            SizedBox(height: 10),
+            CustomDatePicker(
+              transDate,
+              setTransDate,
+            ),
+            TextButton(
+              onPressed: () {
+                if (titleController.value.text.isNotEmpty ||
+                    double.parse(amountController.value.text) <= 0) {
+                  widget.addNewExpense(
+                    Expense(
+                      id: DateTime.now().toString(),
+                      title: titleController.value.text,
+                      amount: double.parse(amountController.value.text),
+                      date: transDate,
+                    ),
+                  );
+                  Navigator.pop(context);
+                }
+              },
+              child: Text("Add Transaction"),
+            ),
+          ],
+        ),
       ),
     );
   }
