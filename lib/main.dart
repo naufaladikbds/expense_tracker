@@ -1,11 +1,21 @@
+import 'package:expense_tracker/custom_button.dart';
 import 'package:expense_tracker/expense.dart';
 import 'package:expense_tracker/expense_chart.dart';
 import 'package:expense_tracker/expense_input.dart';
 import 'package:expense_tracker/expense_list.dart';
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
 
-void main(List<String> args) {
-  runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+    [
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ],
+  ).then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -91,32 +101,79 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {});
   }
 
+  bool showChart = true;
+
   @override
   Widget build(BuildContext context) {
     print("MAIN IS CALLED AGAIN");
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              startAddNewExpense(context);
-            },
-            icon: Icon(Icons.add_box),
-          ),
-        ],
-        title: Text(
-          "Expense Tracker",
-          style: TextStyle(),
+
+    var mediaQ = MediaQuery.of(context);
+
+    final bool isDeviceLandscape = mediaQ.orientation == Orientation.landscape;
+
+    final appBar = AppBar(
+      actions: [
+        CustomButton(
+          onPressed: () => startAddNewExpense(context),
         ),
+      ],
+      title: Text(
+        "Expense Tracker",
+        style: TextStyle(),
       ),
+    );
+
+    var renderExpenseList = Container(
+      height: (mediaQ.size.height -
+              appBar.preferredSize.height -
+              mediaQ.padding.top) *
+          0.8,
+      child: ExpenseList(expenseList, deleteExpense),
+    );
+    return Scaffold(
+      appBar: appBar,
       body: Container(
         color: Color.fromARGB(255, 179, 179, 179),
         child: Column(
           children: [
-            ExpenseChart(
-              recentExpenses: lastSevenDaysExpenses,
-            ),
-            ExpenseList(expenseList, deleteExpense),
+            if (isDeviceLandscape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Show chart"),
+                  Switch(
+                    value: showChart,
+                    onChanged: (val) {
+                      setState(() {
+                        showChart = val;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            if (!isDeviceLandscape)
+              Container(
+                height: (mediaQ.size.height -
+                        appBar.preferredSize.height -
+                        mediaQ.padding.top) *
+                    0.2,
+                child: ExpenseChart(
+                  recentExpenses: lastSevenDaysExpenses,
+                ),
+              ),
+            if (!isDeviceLandscape) renderExpenseList,
+            if (isDeviceLandscape)
+              showChart
+                  ? Container(
+                      height: (mediaQ.size.height -
+                              appBar.preferredSize.height -
+                              mediaQ.padding.top) *
+                          0.7,
+                      child: ExpenseChart(
+                        recentExpenses: lastSevenDaysExpenses,
+                      ),
+                    )
+                  : renderExpenseList,
           ],
         ),
       ),
