@@ -54,20 +54,39 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
   final List<Expense> expenseList = [
-    // Expense(
-    //   id: "01",
-    //   title: "Bruh",
-    //   amount: 10500,
-    //   date: DateTime.now(),
-    // ),
-    // Expense(
-    //   id: "02",
-    //   title: "New car",
-    //   amount: 500000,
-    //   date: DateTime.now(),
-    // ),
+    Expense(
+      id: "01",
+      title: "Bruh",
+      amount: 10500,
+      date: DateTime.now(),
+    ),
+    Expense(
+      id: "02",
+      title: "New car",
+      amount: 500000,
+      date: DateTime.now(),
+    ),
   ];
 
   List<Expense> get lastSevenDaysExpenses {
@@ -101,6 +120,53 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {});
   }
 
+  List<Widget> _buildLandscapeContent(
+      MediaQueryData mediaQ, AppBar appBar, Widget expenseList) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Show chart"),
+          Switch(
+            value: showChart,
+            onChanged: (val) {
+              setState(() {
+                showChart = val;
+              });
+            },
+          ),
+        ],
+      ),
+      showChart
+          ? Container(
+              height: (mediaQ.size.height -
+                      appBar.preferredSize.height -
+                      mediaQ.padding.top) *
+                  0.7,
+              child: ExpenseChart(
+                recentExpenses: lastSevenDaysExpenses,
+              ),
+            )
+          : expenseList
+    ];
+  }
+
+  List<Widget> _buildPortraitContent(
+      MediaQueryData mediaQ, AppBar appBar, Widget expenseList) {
+    return [
+      Container(
+        height: (mediaQ.size.height -
+                appBar.preferredSize.height -
+                mediaQ.padding.top) *
+            0.2,
+        child: ExpenseChart(
+          recentExpenses: lastSevenDaysExpenses,
+        ),
+      ),
+      expenseList
+    ];
+  }
+
   bool showChart = true;
 
   @override
@@ -130,6 +196,7 @@ class _MainScreenState extends State<MainScreen> {
           0.8,
       child: ExpenseList(expenseList, deleteExpense),
     );
+
     return Scaffold(
       appBar: appBar,
       body: Container(
@@ -137,43 +204,17 @@ class _MainScreenState extends State<MainScreen> {
         child: Column(
           children: [
             if (isDeviceLandscape)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Show chart"),
-                  Switch(
-                    value: showChart,
-                    onChanged: (val) {
-                      setState(() {
-                        showChart = val;
-                      });
-                    },
-                  ),
-                ],
+              ..._buildLandscapeContent(
+                mediaQ,
+                appBar,
+                renderExpenseList,
               ),
             if (!isDeviceLandscape)
-              Container(
-                height: (mediaQ.size.height -
-                        appBar.preferredSize.height -
-                        mediaQ.padding.top) *
-                    0.2,
-                child: ExpenseChart(
-                  recentExpenses: lastSevenDaysExpenses,
-                ),
+              ..._buildPortraitContent(
+                mediaQ,
+                appBar,
+                renderExpenseList,
               ),
-            if (!isDeviceLandscape) renderExpenseList,
-            if (isDeviceLandscape)
-              showChart
-                  ? Container(
-                      height: (mediaQ.size.height -
-                              appBar.preferredSize.height -
-                              mediaQ.padding.top) *
-                          0.7,
-                      child: ExpenseChart(
-                        recentExpenses: lastSevenDaysExpenses,
-                      ),
-                    )
-                  : renderExpenseList,
           ],
         ),
       ),

@@ -1,6 +1,6 @@
 import 'package:expense_tracker/expense.dart';
+import 'package:expense_tracker/expense_item.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class ExpenseList extends StatelessWidget {
   List<Expense> expenseList;
@@ -28,50 +28,16 @@ class ExpenseList extends StatelessWidget {
                 ],
               ),
             )
-          : ListView.builder(
-              itemCount: expenseList.length,
-              itemBuilder: (ctx, i) {
-                return Card(
-                  margin: EdgeInsets.only(top: 5, bottom: 0),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 30,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: FittedBox(
-                          child: Text(
-                              "\$${expenseList[i].amount.toStringAsFixed(0)}"),
-                        ),
-                      ),
+          : ListView(
+              children: expenseList
+                  .map(
+                    (e) => ExpenseItem(
+                      expense: e,
+                      deleteExpense: deleteExpense,
+                      key: Key(e.id),
                     ),
-                    title: Text(expenseList[i].title),
-                    subtitle: Text(
-                      DateFormat.yMMMEd().format(expenseList[i].date),
-                    ),
-                    trailing: MediaQuery.of(context).size.width < 600
-                        ? IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              deleteExpense(expenseList[i].id);
-                            },
-                          )
-                        : Container(
-                            width: 100,
-                            child: Row(
-                              children: [
-                                Text("Delete"),
-                                IconButton(
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () {
-                                    deleteExpense(expenseList[i].id);
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                  ),
-                );
-              },
+                  )
+                  .toList(),
 
               // itemBuilder: (ctx, i) => Card(
               //   margin: EdgeInsets.only(

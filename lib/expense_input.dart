@@ -1,28 +1,38 @@
 import 'package:expense_tracker/expense.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 
 class ExpenseInput extends StatefulWidget {
   final void Function(Expense) addNewExpense;
 
-  ExpenseInput(this.addNewExpense);
+  ExpenseInput(this.addNewExpense) {
+    print("Expense input constructor called");
+  }
 
   @override
-  State<ExpenseInput> createState() => _ExpenseInputState();
+  State<ExpenseInput> createState() {
+    print("Expense input state created");
+    return _ExpenseInputState();
+  }
 }
 
 class _ExpenseInputState extends State<ExpenseInput> {
   final titleController = TextEditingController();
-
   final amountController = TextEditingController();
-
   var transDate = DateTime.now();
+
+  _ExpenseInputState() {
+    print("constructor expense input state called");
+  }
 
   setTransDate(val) {
     transDate = val;
+  }
+
+  @override
+  void initState() {
+    print("INIT STATE expense input");
+    super.initState();
   }
 
   // String titleInput = '';
